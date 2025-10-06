@@ -1,0 +1,21 @@
+{
+  "name": "xingwangzhe/files_tree",
+  "version": "0.1.0",
+  "deps": {
+    "moonbitlang/x": "0.4.34"
+  },
+  "readme": "README.mbt.md",
+  "repository": "https://github.com/xingwangzhe/files_tree",
+  "license": "Apache-2.0",
+  "keywords": [
+    "filesystem",
+    "file-tree",
+    "directory",
+    "tree",
+    "ascii-tree",
+    "cross-platform",
+    "utility"
+  ],
+  "description": "A cross-platform file tree library for MoonBit that recursively builds and displays directory structures in ASCII tree format.",
+  "homepage": "https://github.com/xingwangzhe/files_tree"
+}

@@ -1,0 +1,26 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "xingwangzhe/files_tree"
+
+import(
+  "moonbitlang/x/fs"
+)
+
+// Values
+fn build_tree(String) -> FileNode raise @fs.IOError
+
+fn print_tree(FileNode) -> Unit
+
+fn tree_to_string(FileNode) -> String
+
+// Errors
+
+// Types and methods
+pub enum FileNode {
+  File(String)
+  Directory(String, Array[FileNode])
+}
+
+// Type aliases
+
+// Traits
+

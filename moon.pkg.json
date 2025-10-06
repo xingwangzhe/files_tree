@@ -1,5 +1,12 @@
 {
-  "name": "files_tree",
-  "version": "0.1.0",
-  "deps": ["@moonbitlang/core","illusory0x0/path"]
+  "is-main": false,
+  "import": [
+    "moonbitlang/x/fs"
+  ],
+  "files": [
+    "builder.mbt",
+    "printer.mbt",
+    "stringifier.mbt",
+    "types.mbt"
+  ]
 }
