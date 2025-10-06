@@ -1,0 +1,5 @@
+{
+  "name": "files_tree",
+  "version": "0.1.0",
+  "deps": ["@moonbitlang/core","illusory0x0/path"]
+}
