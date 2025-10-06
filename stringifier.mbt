@@ -2,27 +2,83 @@
 /// Convert a single file tree node to string (recursive helper function)
 /// 将单个文件树节点转换为字符串（递归辅助函数）
 fn node_to_string(node : FileNode, prefix : String, is_last : Bool) -> String {
-  // 选择分支符号
-  let branch = if is_last { "└── " } else { "├── " }
+  let branch = get_branch_symbol(is_last)
   match node {
-    File(name) =>
-      // 返回文件行
-      prefix + branch + name + "\n"
-    Directory(name, children) => {
-      // 构建目录行
-      let mut result = prefix + branch + name + "/\n"
-
-      // 计算子节点的新前缀
-      let new_prefix = if is_last { prefix + "    " } else { prefix + "│   " }
-
-      // 递归处理所有子节点
-      let len = children.length()
-      for i = 0; i < len; i = i + 1 {
-        result = result + node_to_string(children[i], new_prefix, i == len - 1)
-      }
-      result
-    }
+    File(name) => format_file_line(prefix, branch, name)
+    Directory(name, children) =>
+      format_directory_tree(prefix, branch, name, children, is_last)
   }
+}
+
+///|
+/// Get the appropriate branch symbol
+/// 获取适当的分支符号
+fn get_branch_symbol(is_last : Bool) -> String {
+  if is_last {
+    "└── "
+  } else {
+    "├── "
+  }
+}
+
+///|
+/// Format a file line
+/// 格式化文件行
+fn format_file_line(prefix : String, branch : String, name : String) -> String {
+  prefix + branch + name + "\n"
+}
+
+///|
+/// Format a directory tree
+/// 格式化目录树
+fn format_directory_tree(
+  prefix : String,
+  branch : String,
+  name : String,
+  children : Array[FileNode],
+  is_last : Bool,
+) -> String {
+  let mut result = format_directory_line(prefix, branch, name)
+  let new_prefix = calculate_child_prefix(prefix, is_last)
+  result = result + format_children_string(children, new_prefix)
+  result
+}
+
+///|
+/// Format a directory line
+/// 格式化目录行
+fn format_directory_line(
+  prefix : String,
+  branch : String,
+  name : String,
+) -> String {
+  prefix + branch + name + "/\n"
+}
+
+///|
+/// Calculate prefix for child nodes
+/// 计算子节点的前缀
+fn calculate_child_prefix(prefix : String, is_last : Bool) -> String {
+  if is_last {
+    prefix + "    "
+  } else {
+    prefix + "│   "
+  }
+}
+
+///|
+/// Format all children to string
+/// 将所有子节点格式化为字符串
+fn format_children_string(
+  children : Array[FileNode],
+  prefix : String,
+) -> String {
+  let mut result = ""
+  let len = children.length()
+  for i = 0; i < len; i = i + 1 {
+    result = result + node_to_string(children[i], prefix, i == len - 1)
+  }
+  result
 }
 
 ///|
@@ -56,21 +112,25 @@ fn node_to_string(node : FileNode, prefix : String, is_last : Bool) -> String {
 /// ```
 pub fn tree_to_string(node : FileNode) -> String {
   match node {
-    File(name) =>
-      // 如果根节点是文件，直接返回文件名
-      name + "\n"
-    Directory(name, children) => {
-      // 构建根目录行
-      let mut result = name + "/\n"
-
-      // 处理所有子节点
-      let len = children.length()
-      for i = 0; i < len; i = i + 1 {
-        result = result + node_to_string(children[i], "", i == len - 1)
-      }
-      result
-    }
+    File(name) => format_root_file(name)
+    Directory(name, children) => format_root_directory(name, children)
   }
+}
+
+///|
+/// Format root file node
+/// 格式化根文件节点
+fn format_root_file(name : String) -> String {
+  name + "\n"
+}
+
+///|
+/// Format root directory node
+/// 格式化根目录节点
+fn format_root_directory(name : String, children : Array[FileNode]) -> String {
+  let mut result = name + "/\n"
+  result = result + format_children_string(children, "")
+  result
 }
 
 ///|

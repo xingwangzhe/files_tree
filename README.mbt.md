@@ -14,18 +14,16 @@
 
 ```moonbit
 ///|
-fn tesst() -> Unit raise {
-  let tree_node = build_tree("./target")
-  print_tree(tree_node)
-}
+fn example() -> Unit raise @fs.IOError {
+  // 构建文件树 / Build file tree
+  let tree = build_tree(".")
 
-//For fn main
+  // 直接打印 / Print directly
+  print_tree(tree)
 
-///|
-fn main_() -> Unit {
-  tesst() catch {
-    e => println("Error: \{e}")
-  }
+  // 或获取字符串 / Or get string representation
+  let tree_str = tree_to_string(tree)
+  println(tree_str)
 }
 ```
 
