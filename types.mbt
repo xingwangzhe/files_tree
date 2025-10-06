@@ -26,6 +26,7 @@ pub enum FileNode {
 pub impl Show for FileNode with output(self, logger) {
   match self {
     File(name) => logger.write_string("File(\{name})")
-    Directory(name, children) => logger.write_string("Directory(\{name}, [\{children.length()} children])")
+    Directory(name, children) =>
+      logger.write_string("Directory(\{name}, [\{children.length()} children])")
   }
 }

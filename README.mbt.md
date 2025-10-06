@@ -14,16 +14,18 @@
 
 ```moonbit
 ///|
-fn example() -> Unit raise @fs.IOError {
-  // 构建文件树 / Build file tree
-  let tree = build_tree(".")
+fn tesst() -> Unit raise {
+  let tree_node = build_tree("./target")
+  print_tree(tree_node)
+}
 
-  // 直接打印 / Print directly
-  print_tree(tree)
+//For fn main
 
-  // 或获取字符串 / Or get string representation
-  let tree_str = tree_to_string(tree)
-  println(tree_str)
+///|
+fn main_() -> Unit {
+  tesst() catch {
+    e => println("Error: \{e}")
+  }
 }
 ```
 
@@ -37,5 +39,47 @@ fn example() -> Unit raise @fs.IOError {
 ├── README.md
 └── README.mbt.md
 ```
+
+### 重要说明 / Important Notes
+
+#### 路径解析机制 / Path Resolution Mechanism
+
+**相对路径是相对于程序运行时的工作目录（CWD），而不是源代码文件所在的目录。**
+
+**Relative paths are resolved relative to the Current Working Directory (CWD) where the program runs, NOT relative to the source code file location.**
+
+这是因为底层实现：
+- `build_tree()` 调用 `@fs.is_dir()` 和 `@fs.read_dir()`
+- 这些函数通过 FFI 调用 C 标准库函数（`stat()`, `opendir()` 等）
+- 路径解析由**操作系统内核**完成，遵循 POSIX 标准
+- 相对路径基准点是进程的当前工作目录，由 shell 在启动程序时设置
+
+This is because of the underlying implementation:
+- `build_tree()` calls `@fs.is_dir()` and `@fs.read_dir()`
+- These functions use FFI to call C standard library functions (`stat()`, `opendir()`, etc.)
+- Path resolution is handled by the **OS kernel**, following POSIX standards
+- The base directory for relative paths is the process's current working directory, set by the shell when the program starts
+
+**示例 / Example:**
+
+如果从 `/home/user/project/` 目录运行程序：  
+If running the program from `/home/user/project/`:
+
+```
+build_tree(".")      → 遍历 /home/user/project/
+                       Traverses /home/user/project/
+
+build_tree("./src")  → 遍历 /home/user/project/src/
+                       Traverses /home/user/project/src/
+
+build_tree("../")    → 遍历 /home/user/
+                       Traverses /home/user/
+```
+
+**建议 / Recommendations:**
+
+1. 在项目根目录运行测试和程序 / Run tests and programs from the project root directory
+2. 使用相对路径时要注意当前工作目录 / Be aware of the current working directory when using relative paths
+3. 如需使用绝对路径可直接传入完整路径 / Use absolute paths if you need path independence
 
 

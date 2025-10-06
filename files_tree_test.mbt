@@ -3,7 +3,7 @@ test "build_tree should work" {
   // 测试build_tree函数是否能正常工作
   let tree = build_tree(".")
   // 只要不抛出异常就算成功
-  println("build_tree \{tree}");
+  println("build_tree \{tree}")
   inspect("build_tree works", content="build_tree works")
 }
 

@@ -19,6 +19,7 @@ pub enum FileNode {
   File(String)
   Directory(String, Array[FileNode])
 }
+impl Show for FileNode
 
 // Type aliases
 
