@@ -9,13 +9,6 @@
 - 支持字符串输出和直接打印 / Support both string output and direct printing
 - 支持跨平台路径格式 / Support cross-platform path formats
 
-### 安装 / Installation
-
-```bash
-moon add xingwangzhe/files_tree
-```
-
-### 快速开始 / Quick Start
 
 #### 基本用法 / Basic Usage
 
